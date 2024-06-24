@@ -5,6 +5,8 @@ const morgan = require("morgan");
 const connection = require("./db/connection");
 const authRoute = require("./routes/auth.route");
 const userRoute = require("./routes/user.route");
+const postRoute = require("./routes/post.route")
+const commentRoute = require("./routes/comments.route")
 
 
 const app = express();
@@ -23,6 +25,8 @@ app.use((err,req,res,next)=>{
 
 app.use('/api/v1/auth',authRoute)
 app.use('/api/v1/user',userRoute)
+app.use('/api/v1/posts',postRoute)
+app.use('/api/v1/comments',commentRoute)
 
 
 const port = 9000 || process.env.PORT;

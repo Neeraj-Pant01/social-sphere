@@ -59,6 +59,7 @@ exports.followUser = async (req, res, next) => {
     }
 }
 
+
 //unfollow a user
 exports.unfollowUser = async (req,res,next) =>{
     try{
@@ -76,3 +77,49 @@ exports.unfollowUser = async (req,res,next) =>{
         next(err)
     }
 }
+
+
+//get a user
+exports.getUser = async (req,res,next) =>{
+    const q = req.query;
+    try{
+        const user = q.name ? await userModel.find({
+            username : {$regex: q.name, $options : "i"}
+        }) : await userModel.findById(req.params.id)
+
+        if(!user) return next(createError(404, "no user found !"))
+
+            res.status(200).json(user)
+    }catch(err){
+        next(err)
+    }
+}
+
+
+//get the users
+exports.getUsers = async (req, res, next) =>{
+    try{
+        const users = await userModel.find();
+        res.status(200).json(users)
+    }catch(err){
+        next(err)
+    }
+}
+
+
+//get nearest users 
+exports.getnearestUsers = async (req,res,next) =>{
+    try{
+        const currentUser = await userModel.findById(req.user.userId)
+
+        const users = await userModel.find({city:currentUser.city})
+
+        res.status(200).json(users)
+
+    }catch(err){
+        next(err)
+    }
+}
+
+
+
