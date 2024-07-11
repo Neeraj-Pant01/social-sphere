@@ -14,12 +14,10 @@ const commentSchema = new mongoose.Schema({
         required:true
     },
     likes:{
-        type:String,
-        required:true
+        type:[String],
     },
     reports:{
-        type:String,
-        required:true
+        type:[String],
     }
 },{
     timestamps: true

@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
 import { AiFillCloseSquare, AiOutlineCloudUpload } from 'react-icons/ai'
+import { useSelector } from 'react-redux'
+import { uploadThePost } from '../utils/postRequests'
 
 const AddNewPost = () => {
     const [img, setImg] = useState(null)
+    const [postdes, setPostDesc] = useState('')
 
     const [base64String, setBase64String] = useState('')
+
+    const user = useSelector((state)=>state.user.currentUser)
+    const token = user.token;
 
     const handleChange = (e) =>{
         setImg(e.target.files[0])
@@ -20,15 +26,24 @@ const AddNewPost = () => {
         }
     }
 
-    const uploadPost = () =>{
-        // console.log(base64String.split(",")[1])
-        // const image = atob(base64String.split(",")[1])
-        // setRealImage(image)
+    const uploadPost = async () =>{
+        let postdata = {
+            picture : base64String,
+            desc: postdes
+        }
+        try{
+            const response = await uploadThePost(token, postdata)
+            if(response.status === 200){
+                window.location.reload();
+            }
+        }catch(err){
+            console.log(err)
+        }
     }
 
     return (
         <div className='flex flex-col mt-3 items-center gap-1  rounded-lg px-2 py-3 mb-10'>
-            <textarea className='border-2 outline-none rounded-md md:w-[300px] w-full h-[100px] px-3 py-3' />
+            <textarea className='border-2 outline-none rounded-md md:w-[300px] w-full h-[100px] px-3 py-3' placeholder={`whats on your mind ${user.username} ?`} onChange={(e)=>setPostDesc(e.target.value)}/>
             {
                 img ?
                     <div className='relative flex items-center justify-center w-full'>

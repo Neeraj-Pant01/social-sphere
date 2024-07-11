@@ -5,8 +5,8 @@ const postSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    pictures:{
-        type:[String]
+    picture:{
+        type:String
     },
     desc:{
         type:String

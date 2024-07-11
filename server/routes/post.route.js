@@ -18,7 +18,7 @@ router.put('/:id',verifyToken, dislikePost)
 router.get('/:id',verifyToken, getSinglePost)
 
 //get all posts
-router.get('/:id',verifyToken, getAllPosts)
+router.get('/',verifyToken, getAllPosts)
 
 //get user's profile post
 router.get('/user/:id',verifyToken, getProfilePosts)

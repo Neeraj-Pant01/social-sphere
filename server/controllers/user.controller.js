@@ -121,5 +121,31 @@ exports.getnearestUsers = async (req,res,next) =>{
     }
 }
 
+//get the followers
+exports.getFollowers = async (req,res,next) =>{
+    try{
+        const user = await userModel.findById(req.params.id)
+        const folllowers = await userModel.find({
+            _id : {$in : user.followers}
+        })
+        res.status(200).json(folllowers)
+    }catch(err){
+        next(err)
+    }
+}
+
+//get the followings
+exports.getTheFollowings = async (req,res,next) =>{
+    try{
+        const user = await userModel.findById(req.params.id)
+        const followings = await userModel.find({
+            _id : {$in : user.followings}
+        })
+        res.status(200).json(followings)
+    }catch(err){
+        next(err)
+    }
+}
+
 
 

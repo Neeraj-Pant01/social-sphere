@@ -4,7 +4,7 @@ import Homepage from './pages/Homepage'
 import SinglePost from './pages/SinglePost'
 import Profile from './pages/Profile'
 import Fans from './pages/Fans'
-import { Outlet, Route, RouterProvider, Routes, createBrowserRouter } from 'react-router-dom'
+import { Navigate, Outlet, Route, RouterProvider, Routes, createBrowserRouter } from 'react-router-dom'
 import Login from './pages/Login'
 import Footer from './components/Footer'
 import { useSelector } from 'react-redux'
@@ -31,25 +31,25 @@ const App = () => {
       children: [
         {
           path:'/',
-          element: <Homepage />
+          element:user ? <Homepage /> : <Navigate to={'/login'} />
         },
         {
-          path:'/fans',
-          element: <Fans />
+          path:'/fans/:id',
+          element:user ? <Fans /> : <Navigate to={'/login'} />
         },
         {
           path: 'post/:id',
-          element: <SinglePost />
+          element:user ? <SinglePost /> : <Navigate to={'/login'} />
         },
         {
           path:'profile/:id',
-          element: <Profile />
+          element:user ? <Profile /> : <Navigate to={'/login'} />
         }
       ]
     },
     {
       path: '/login',
-      element: <Login />
+      element:!user ? <Login /> : <Navigate to={'/'} />
     }
   ])
   return <RouterProvider router={router} />

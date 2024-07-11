@@ -95,7 +95,7 @@ exports.getSinglePost = async (req, res, next) =>{
 //get all the post
 exports.getAllPosts = async (req,res,next) =>{
     try{
-        const posts = await postModel.find();
+        const posts = await postModel.find().sort({createdAt : -1})
         res.status(200).json(posts)
     }catch(err){
         next(err)
@@ -106,7 +106,7 @@ exports.getAllPosts = async (req,res,next) =>{
 //get the user's profile post
 exports.getProfilePosts = async (req,res,next) =>{
     try{
-        const posts = await postModel.find({userId: req.user.userId})
+        const posts = await postModel.find({userId: req.params.id})
         res.status(200).json(posts)
     }catch(err){
         next(err)

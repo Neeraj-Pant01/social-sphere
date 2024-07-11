@@ -54,7 +54,7 @@ exports.reportAComment = async (req,res,next) =>{
 //get all comments of the post
 exports.getAllPostcomments = async (req,res,next) =>{
     try{
-        const comments = commentModel.find({postId: req.params.id})
+        const comments = await commentModel.find({postId: req.params.id})
 
         res.status(200).json(comments)
     }catch(err){
