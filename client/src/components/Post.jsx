@@ -4,14 +4,20 @@ import { CiPaperplane } from "react-icons/ci";
 import { Link, useNavigate } from 'react-router-dom';
 import { getUser } from '../utils/userRequest';
 import { useSelector } from 'react-redux';
+import { getPostComments } from '../utils/commentRequest';
+import { dislikepost, likepost } from '../utils/postRequests';
 
 const Post = ({p}) => {
-    const [like, setLike] = useState(false)
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState()
+    const [comments, setComments] = useState([])
+    const [likes, setLikes] = useState(p.likes.length)
 
     const token = useSelector((state)=>state.user.currentUser.token)
     const id = p?.userId
+    const user = useSelector((state)=>state.user.currentUser)
+
+    const [like, setLike] = useState(p.likes.includes(user._id))
 
     const getTheUser = async (token, id) =>{
       try{
@@ -21,10 +27,35 @@ const Post = ({p}) => {
         console.log(err)
       }
     }
+    const getTheComments = async () =>{
+      try{
+        const response = await getPostComments(token, p?._id)
+        setComments(response.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
 
     useEffect(()=>{
       getTheUser(token, id)
+      getTheComments()
     },[])
+
+    const handleLike = async () =>{
+      const response = await likepost(token, p?._id)
+      if(response.status === 200){
+      setLike(true)
+      setLikes(likes + 1)
+      }
+    }
+
+    const handleDislike = async () =>{
+      const response = await dislikepost(token, p?._id)
+      if(response.status === 200){
+        setLikes(likes - 1)
+        setLike(!like)
+      }
+    }
 
     // const desc = p?.desc;
     // console.log(desc.length)
@@ -57,25 +88,25 @@ const Post = ({p}) => {
         <div className="flex items-center">
         {
             like?
-            <button className='px-2 py-1 text-2xl text-[gold]' onClick={()=>setLike(!like)}><AiFillStar /></button>
+            <button className='px-2 py-1 text-2xl text-[gold]'><AiFillStar onClick={handleDislike}/></button>
             :
-        <button className='px-2 py-1 text-2xl' onClick={()=>setLike(!like)}><AiOutlineStar /></button>
+        <button className='px-2 py-1 text-2xl' ><AiOutlineStar onClick={handleLike} /></button>
         }
-        <span className='text-[#318CE7]'>{p?.likes.length}</span>
+        <span className='text-[#318CE7]'>{likes}</span>
 
         </div>
         <div className="flex items-center">
         <button className='px-2 py-1 text-2xl self-end ml-10' onClick={()=>navigate(`/post/${p?._id}`)}>
         <AiOutlineComment />
         </button>
-        <span className='text-[#318CE7]'>1k</span>
+        <span className='text-[#318CE7]'>{comments.length}</span>
         </div>
 
         <div className="flex items-center">
         <button className='px-2 py-1 text-2xl self-end ml-10' onClick={()=>setLike(!like)}>
             <CiPaperplane />
         </button>
-        <span className='text-[grey]'>1k</span>
+        <span className='text-[grey]'>0</span>
         </div>
       </div>
     </div>

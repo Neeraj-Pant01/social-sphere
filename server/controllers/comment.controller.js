@@ -28,7 +28,7 @@ exports.likeComment = async (req,res,next) =>{
 
             res.status(200).json({message:"comment disliked "})
         }else{
-            comment.updateOne({$push : {likes:req.user.userId}})
+            await comment.updateOne({$push : {likes:req.user.userId}})
         res.status(200).json({message:"comment liked !"})
         }
     }catch(err){

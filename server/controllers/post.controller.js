@@ -18,9 +18,12 @@ exports.likePost = async (req, res, next) => {
     try {
         const post = await postModel.findById(req.params.id)
         if (post.likes.includes(req.user.userId)) return next(createError(403, "you already liked this post"))
+
         await post.updateOne({ $push: { likes: req.user.userId } })
 
-        post.dislikes(includes(req.user.userId)) && await post.updateOne({ $pull: { dislikes: req.user.userId} })
+        if(post.dislikes.length > 0){
+            post.dislikes.includes(req.user.userId) && await post.updateOne({ $pull: { dislikes: req.user.userId} })
+        }
 
         res.status(200).json({ message: "post liked" })
     } catch (err) {

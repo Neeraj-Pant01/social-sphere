@@ -9,7 +9,7 @@ router.post('/:id',verifyToken, addComment)
 router.put('/:id',verifyToken, likeComment)
 
 //report the comment
-router.put('/:id',verifyToken, reportAComment)
+router.put('report/:id',verifyToken, reportAComment)
 
 //get all comments
 router.get('/:id',verifyToken, getAllPostcomments)

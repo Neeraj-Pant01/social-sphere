@@ -18,6 +18,10 @@ const Fan = ({l}) => {
         }
     }
 
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    })
+
 
     return (
         <div className='flex items-center gap-4 justify-center mb-3'>

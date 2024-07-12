@@ -12,7 +12,7 @@ router.put('/',verifyToken, updatePost)
 router.put('/:id',verifyToken, likePost)
 
 //dislike the post
-router.put('/:id',verifyToken, dislikePost)
+router.put('/dislike/:id',verifyToken, dislikePost)
 
 //get a post
 router.get('/:id',verifyToken, getSinglePost)

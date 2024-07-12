@@ -4,27 +4,34 @@ import { CiPaperplane } from 'react-icons/ci'
 import Comments from '../components/Comments'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { getTheSinglePost } from '../utils/postRequests'
+import { dislikepost, getTheSinglePost, likepost } from '../utils/postRequests'
 import { getUser } from '../utils/userRequest'
 import { addPostComment, getPostComments } from '../utils/commentRequest'
 
 const SinglePost = () => {
   const [comments, setComments] = useState([])
-  const [like, setLike] = useState(false)
   const [showComments, setShowComments] = useState(true)
   const [post, setPost] = useState()
   const [comment, setComment] = useState()
   const [currentUser, setCurrentUser] = useState()
+  const [likes, setLikes] = useState(0)
+  const [like, setLike] = useState(false)
 
   const { id } = useParams();
 
   const token = useSelector((state) => state.user.currentUser.token)
   const user = useSelector((state) => state.user.currentUser)
 
+  useEffect(()=>{
+    window.scrollTo(0,0)
+})
+
   const getSinglePost = async (token, id) => {
     try {
       const response = await getTheSinglePost(token, id)
       setPost(response.data)
+      setLikes(response.data.likes.length)
+      setLike(response.data.likes.includes(user._id))
       getThePostOwner(response.data.userId)
     } catch (err) {
       console.log(err)
@@ -59,10 +66,26 @@ const SinglePost = () => {
       comment: comment
     }
     const response = await addPostComment(token, post?._id, commentData)
-    console.log(response.data)
     setComment("")
     getTheComments()
   }
+
+    const handleLike = async () =>{
+      const response = await likepost(token, post?._id)
+      if(response.status === 200){
+      setLike(true)
+      setLikes(likes + 1)
+      }
+  }
+
+
+    const handleDislike = async () =>{
+      const response = await dislikepost(token, post?._id)
+      if(response.status === 200){
+        setLikes(likes - 1)
+        setLike(!like)
+      }
+    }
 
   return (
     <div className='flex flex-col px-2 mt-3 min-h-screen'>
@@ -83,25 +106,25 @@ const SinglePost = () => {
           <div className="flex items-center">
             {
               like ?
-                <button className='px-2 py-1 text-2xl text-[gold]' onClick={() => setLike(!like)}><AiFillStar /></button>
+                <button className='px-2 py-1 text-2xl text-[gold]' onClick={handleDislike}><AiFillStar /></button>
                 :
-                <button className='px-2 py-1 text-2xl' onClick={() => setLike(!like)}><AiOutlineStar /></button>
+                <button className='px-2 py-1 text-2xl'  onClick={handleLike}><AiOutlineStar /></button>
             }
-            <span className='text-[#318CE7]'>19K</span>
+            <span className='text-[#318CE7]'>{likes}</span>
 
           </div>
           <div className="flex items-center">
             <button className='px-2 py-1 text-2xl self-end ml-10'>
               <AiOutlineComment />
             </button>
-            <span className='text-[#318CE7]'>1k</span>
+            <span className='text-[#318CE7]'>{comments.length}</span>
           </div>
 
           <div className="flex items-center">
-            <button className='px-2 py-1 text-2xl self-end ml-10' onClick={() => setLike(!like)}>
+            <button className='px-2 py-1 text-2xl self-end ml-10' >
               <CiPaperplane />
             </button>
-            <span className='text-[grey]'>1k</span>
+            <span className='text-[grey]'>0</span>
           </div>
 
           {

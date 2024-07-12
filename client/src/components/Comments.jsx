@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { AiFillDelete, AiOutlineDislike, AiOutlineStar } from "react-icons/ai"
+import { AiFillDelete, AiFillStar, AiOutlineDislike, AiOutlineStar } from "react-icons/ai"
 import { useNavigate } from 'react-router-dom'
 import { getUser } from '../utils/userRequest';
 import { useSelector } from 'react-redux';
+import { likeAcomment } from '../utils/commentRequest';
 
 const Comments = ({c}) => {
     const navigate = useNavigate();
     const [user, setuser] = useState()
+    const [likecount, setLikeCount] = useState(c.likes.length)
 
     const token = useSelector((state) => state.user.currentUser.token)
+    const currentUser = useSelector((state)=> state.user.currentUser)
+
+      const [isliked, setIsliked] = useState(c.likes.includes(currentUser._id))
 
     useEffect(()=>{
       const getCommentUser = async () =>{
@@ -17,6 +22,23 @@ const Comments = ({c}) => {
       }
       getCommentUser();
     },[c?.userId])
+
+    const handleLikeComment = async () =>{
+      const response = await likeAcomment(token, c._id)
+      if(response.status === 200){
+        setIsliked(true)
+        setLikeCount(likecount + 1)
+      }
+    }
+
+    const handleDislike = async () =>{
+      const response = await likeAcomment(token, c._id)
+      if(response.status === 200){
+        setLikeCount(likecount - 1)
+        setIsliked(!isliked)
+      }
+    }
+
   return (
     <div className='flex flex-col mb-3'>
         <div className="flex items-center gap-2">
@@ -24,9 +46,15 @@ const Comments = ({c}) => {
         <p className='text-[grey]'>{c.comment}.</p>
         </div>
       <div className='flex items-center justify-between px-10'>
-        <div className='flex items-center gap-2'>
-            <AiOutlineStar className='text-xl font-bold' />
-            {c.likes.length}
+        <div className='flex items-center gap-2' >
+          {
+            isliked ?
+            <AiFillStar className='text-xl font-bold' onClick={handleDislike} />
+            :
+            <AiOutlineStar className='text-xl font-bold' onClick={handleLikeComment}/>
+          }
+            {likecount}
+            
         </div>
         <div className='flex gap-2 items-center'>
             <AiOutlineDislike className='text-xl font-bold'/>
