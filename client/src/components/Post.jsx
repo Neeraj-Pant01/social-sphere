@@ -61,7 +61,7 @@ const Post = ({p}) => {
     // console.log(desc.length)
 
   return (
-    <div className='flex flex-col bg-[#f7f6f6] py-4'>
+    <div className='flex flex-col px-2 rounded-md bg-[#f7f6f6] py-4'>
       <div className='flex flex-col'>
         {
           p?.picture &&
