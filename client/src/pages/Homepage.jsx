@@ -41,7 +41,7 @@ const Homepage = () => {
 
   return (
     <div className='flex md:px-2'>
-      <div className="flex-1 border-r-2">
+      <div className="flex-1">
       <Sidecomponent />
       </div>
 
@@ -60,7 +60,7 @@ const Homepage = () => {
       </div>
 
       <div className="flex-1 sticky top-[55px] h-[90vh] hidden md:flex flex-col gap-4">
-        <b className='text-lg text-[grey]'>Contacts</b>
+        <b className='text-lg text-[grey] mt-4'>Contacts</b>
         <OnlineUser />
         <OnlineUser />
         <OnlineUser />

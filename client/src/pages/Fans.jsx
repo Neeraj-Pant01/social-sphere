@@ -93,7 +93,7 @@ const Fans = () => {
     }
 
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col min-h-[70vh]'>
             {
                 data === "fans" ?
                     <div>

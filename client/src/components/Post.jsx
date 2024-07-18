@@ -61,12 +61,12 @@ const Post = ({p}) => {
     // console.log(desc.length)
 
   return (
-    <div className='flex flex-col px-2 rounded-md bg-[#f7f6f6] py-4'>
+    <div className='flex flex-col px-2 md:px-4 rounded-md md:rounded-lg bg-[#f7f6f6] py-4'>
       <div className='flex flex-col'>
         {
           p?.picture &&
           <div className="flex-1 flex items-center justify-center" onClick={()=>navigate(`/post/${p?._id}`)}>
-          <img src={p?.picture} alt='post' className='rounded-md h-[200px] w-[90%]' />
+          <img src={p?.picture} alt='post' className='rounded-md md:h-[300px] h-[200px] w-[90%]' />
         </div>
         }
       <div className="flex-1 flex flex-col">

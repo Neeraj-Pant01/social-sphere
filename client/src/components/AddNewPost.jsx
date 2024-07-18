@@ -189,8 +189,8 @@ const AddNewPost = () => {
     };
 
     return (
-        <div className='flex flex-col mt-3 items-center gap-1 rounded-lg px-2 py-3 mb-10'>
-            <textarea className='border-2 outline-none rounded-md md:w-[300px] w-full h-[100px] px-3 py-3' placeholder={`whats on your mind ${user.username} ?`} onChange={(e) => setPostDesc(e.target.value)} />
+        <div className='flex flex-col mt-3 items-center gap-1 rounded-lg px-2 py-3 mb-10 border'>
+            <textarea className='border-2 outline-none rounded-md md:w-[400px] w-full h-[100px] px-3 py-3' placeholder={`whats on your mind ${user.username} ?`} onChange={(e) => setPostDesc(e.target.value)} />
             {
                 img ?
                     <div className='relative flex items-center justify-center w-full'>

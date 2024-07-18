@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai"
+import { AiFillBell, AiFillHome, AiOutlineClose, AiOutlineMenu } from "react-icons/ai"
+import { FaFacebookMessenger, FaGift, FaLayerGroup, FaPuzzlePiece, FaTv, FaUsers } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -15,7 +16,8 @@ const Navbar = () => {
     const user = useSelector((state)=>state.user.currentUser)
 
     return (
-        <div className='bg-[#fffbfb] md:py-3 py-3 px-2 sticky top-0 z-50'>
+        <>
+        <div className=' bg-[white] md:hidden md:py-3 py-3 px-2 sticky top-0 z-50'>
             <div className='flex items-center justify-between'>
                 <div className='md:hidden flex items-center gap-2'>
                     {
@@ -44,6 +46,29 @@ const Navbar = () => {
                 </div>
             }
         </div>
+        <div className='hidden md:flex sticky py-3 font-semibold z-50 bg-[white] top-0 px-10 items-center justify-between'>
+            <div className="flex items-center gap-2">
+            <Link style={{fontFamily:"cursive"}} className='flex items-center text-2xl text-[#2b51b1]' to={'/'}><span className='text-[gold]'>S</span>
+            OCIAL<span className='text-[gold]'>S</span>PHERE</Link>
+            <input type='text' className='px-2 py-1 outline-none bg-[#efeeee] rounded-xl border' placeholder='search here !'></input>
+            </div>
+
+            <div className="flex items-center text-2xl gap-14  text-[#B38B6D]">
+                <AiFillHome className='cursor-pointer text-[teal]' />
+                <FaUsers className='cursor-pointer'/>
+                <FaTv className='cursor-pointer'/>
+                <FaGift className='cursor-pointer'/>
+                <FaLayerGroup className='cursor-pointer'/>
+            </div>
+
+            <div className="flex items-center gap-4 text-2xl text-[#B38B6D]">
+                <FaPuzzlePiece className='cursor-pointer' />
+                <FaFacebookMessenger className='cursor-pointer'/>
+                <AiFillBell className='cursor-pointer'/>
+                <img src={user?.profilePic || "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?size=338&ext=jpg&ga=GA1.1.1546980028.1719792000&semt=ais_user"} alt='' className='w-[45px] h-[45px] rounded-full cursor-pointer' onClick={()=>navigate(`/profile/${user?._id}`)}/>
+            </div>
+        </div>
+        </>
     )
 }
 

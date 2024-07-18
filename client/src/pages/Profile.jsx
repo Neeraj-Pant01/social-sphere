@@ -16,6 +16,10 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useState();
   const [updatedImage, setUpdatedImg] = useState(null)
 
+  useEffect(()=>{
+    window.scrollTo(0,0)
+},[])
+
   const getTheUser = async (token, id) =>{
     try{
       const response = await getUser(token, id);
@@ -42,9 +46,9 @@ const Profile = () => {
 
   return (
     <div className='min-h-screen'>
-      <div className='flex items-center justify-center relative h-[240px] border'>
-        <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI327d9xKBPs8w7rJL5j40RNoOu2jG2WR0Pg&s' className='h-full' />
-        <div className='flex absolute w-[140px] h-[140px] rounded-full border-4 border-[lightgrey] bottom-[-20%]'>
+      <div className='flex items-center justify-center relative h-[240px]'>
+        <img src='https://static.vecteezy.com/system/resources/previews/003/228/004/non_2x/road-out-of-the-forest-beautiful-autumn-landscape-vector.jpg' className='h-full md:w-[70%] object-cover md:h-[400px]' />
+        <div className='flex absolute w-[140px] h-[140px] rounded-full border-4 border-[lightgrey] bottom-[-20%] md:bottom-[-35%]'>
           <label htmlFor='u-img'>
             {
               updatedImage ?
@@ -90,11 +94,21 @@ const Profile = () => {
             </div>
         </div>
       </div>
-      <div className='flex flex-col mt-4 px-3 gap-4'>
+      <div className=' md:hidden flex flex-col mt-4 px-3 gap-4'>
         <b className='px-3'>POSTS({profilePosts.length})</b>
         {
           profilePosts.map((p,i)=><Post key={i} p={p} />)
         }
+      </div>
+
+      <div className="hidden md:flex items-center justify-center mt-6">
+        {/* <div className="border w-[400px]">left</div> */}
+        <div className="flex flex-col w-[600px] gap-10">
+        <b className='px-3 text-center'>POSTS({profilePosts.length})</b>
+        {
+          profilePosts.map((p,i)=><Post key={i} p={p} />)
+        }
+        </div>
       </div>
     </div>
   )
