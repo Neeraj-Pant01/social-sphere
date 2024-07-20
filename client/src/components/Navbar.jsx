@@ -66,6 +66,10 @@ const Navbar = () => {
                 <FaFacebookMessenger className='cursor-pointer'/>
                 <AiFillBell className='cursor-pointer'/>
                 <img src={user?.profilePic || "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?size=338&ext=jpg&ga=GA1.1.1546980028.1719792000&semt=ais_user"} alt='' className='w-[45px] h-[45px] rounded-full cursor-pointer' onClick={()=>navigate(`/profile/${user?._id}`)}/>
+                <div className='hidden md:flex text-[16px] cursor-pointer font-semibold' onClick={()=>{
+                    localStorage.clear()
+                    window.location.reload()
+                }}>LogOut</div>
             </div>
         </div>
         </>

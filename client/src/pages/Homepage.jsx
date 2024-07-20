@@ -86,8 +86,8 @@ const Homepage = () => {
         <b className='text-[teal]'>Suggested for you</b>
         <div className="flex gap-4 flex-col">
         {
-          users.length > 0 &&
-          users.map((u,i)=>{
+          users?.length > 0 &&
+          users?.map((u,i)=>{
             return (
               <Homesuggest key={i} u={u} />
             )

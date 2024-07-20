@@ -62,7 +62,7 @@ const Login = () => {
                 </b>
             </div>
 
-            <div className='flex flex-col bg-[white] rounded-lg w-[90%] px-3 py-4 gap-2'>
+            <div className='flex flex-col bg-[white] rounded-lg md:w-[50%] w-[90%] px-3 py-4 gap-2'>
 
                 <input type='email' placeholder='enter email' className='border px-4 py-2 rounded-md outline-none' name='email' onChange={handleCHange} />
 
@@ -90,9 +90,9 @@ const Login = () => {
             <div className='flex items-center justify-center mt-2'>
                 {
                     login ?
-                        <b onClick={() => setLogin(false)}>don't have an account register ?</b>
+                        <b className='cursor-pointer' onClick={() => setLogin(false)}>don't have an account register ?</b>
                         :
-                        <b onClick={() => setLogin(true)}>alreday have an account Login</b>
+                        <b className='cursor-pointer' onClick={() => setLogin(true)}>alreday have an account Login</b>
                 }
             </div>
 
