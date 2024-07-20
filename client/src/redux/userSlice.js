@@ -22,9 +22,14 @@ export const userSlice = createSlice({
             if(state.currentUser && state.currentUser.followings){
                 state.currentUser.followings = state.currentUser.followings.filter(id => id !== action.payload.id)
             }
+        },
+
+        updateUserInfo:(state, action) =>{
+            const token = state.currentUser?.token
+            state.currentUser = {...action.payload , token} 
         }
     }
 })
 
-export const { loginUser, followUSer, unfollowAUser } = userSlice.actions;
+export const { loginUser, followUSer, unfollowAUser, updateUserInfo } = userSlice.actions;
 export default userSlice.reducer;

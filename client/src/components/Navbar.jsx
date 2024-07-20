@@ -53,7 +53,7 @@ const Navbar = () => {
             <input type='text' className='px-2 py-1 outline-none bg-[#efeeee] rounded-xl border' placeholder='search here !'></input>
             </div>
 
-            <div className="flex items-center text-2xl gap-14  text-[#B38B6D]">
+            <div className="flex items-center text-2xl gap-14  text-[teal]">
                 <AiFillHome className='cursor-pointer text-[teal]' />
                 <FaUsers className='cursor-pointer'/>
                 <FaTv className='cursor-pointer'/>
@@ -61,7 +61,7 @@ const Navbar = () => {
                 <FaLayerGroup className='cursor-pointer'/>
             </div>
 
-            <div className="flex items-center gap-4 text-2xl text-[#B38B6D]">
+            <div className="flex items-center gap-4 text-2xl text-[teal]">
                 <FaPuzzlePiece className='cursor-pointer' />
                 <FaFacebookMessenger className='cursor-pointer'/>
                 <AiFillBell className='cursor-pointer'/>

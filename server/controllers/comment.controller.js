@@ -65,16 +65,14 @@ exports.getAllPostcomments = async (req,res,next) =>{
 //delete the comment
 exports.deleteComment = async (req,res,next) =>{
     try{
-        const post = await postModel.findById(req.params.id)
-        const comment = await commentModel.findById(req.body.commentId)
-
+        const post = await postModel.findById(req.body.postId)
+        const comment = await commentModel.findById(req.params.id)
         if(comment.userId === req.user.userId || req.user.userId===post.userId){
             await commentModel.findByIdAndDelete(req.params.id)
+            res.status(200).json({message:"comment deleted successfully !"})
         }else{
             next(createError(403, "you are not allowed to perform this task"))
         }
-
-        res.status(200).json({message:"comment deleted successfully !"})
     }catch(err){
         next(err)
     }

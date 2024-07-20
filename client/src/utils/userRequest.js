@@ -49,3 +49,18 @@ export const unfollowuser = async (token, id) =>{
         return err
     }
 }
+
+export const updateUser = async (setLoading, token, id, profilePic) =>{
+    const api = makeApirequest(token)
+    setLoading(true)
+    try{
+        const response = await api.put(`/user/${id}`,{
+            profilePic
+        })
+        setLoading(false)
+        return response;
+    }catch(err){
+        setLoading(false)
+        return err
+    }
+}

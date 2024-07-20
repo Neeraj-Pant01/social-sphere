@@ -16,6 +16,7 @@ const SinglePost = () => {
   const [currentUser, setCurrentUser] = useState()
   const [likes, setLikes] = useState(0)
   const [like, setLike] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const { id } = useParams();
 
@@ -27,14 +28,17 @@ const SinglePost = () => {
 })
 
   const getSinglePost = async (token, id) => {
+    setLoading(true)
     try {
       const response = await getTheSinglePost(token, id)
       setPost(response.data)
       setLikes(response.data.likes.length)
       setLike(response.data.likes.includes(user._id))
       getThePostOwner(response.data.userId)
+      setLoading(false)
     } catch (err) {
       console.log(err)
+      setLoading(false)
     }
   }
 
@@ -88,9 +92,15 @@ const SinglePost = () => {
     }
 
   return (
-    <div className='flex flex-col px-2 mt-3 min-h-screen'>
-      {post?.picture && <img src={post?.picture} className='h-[240px] rounded-lg' />}
-      <div className='flex flex-col px-2'>
+    <>
+    {loading ?
+    <div className='flex items-center justify-center'>
+      Loading...
+    </div>
+    :
+    <div className='flex flex-col md:flex-row md:justify-center px-2 md:gap-4 mt-3 min-h-screen'>
+      {post?.picture && <img src={post?.picture} className='h-[240px] md:sticky md:top-[50px] md:w-[50%] md:h-[450px] rounded-lg md:my-10' />}
+      <div className='flex flex-col md:w-[300px] px-2 md:my-10'>
         <Link to={`/profile/${post?.userId}`} style={{ fontFamily: "cursive" }} className='flex items-center font-bold text-2xl text-[#318CE7]'>
           {
             currentUser?.username
@@ -131,7 +141,7 @@ const SinglePost = () => {
             user._id === post?.userId &&
             <div className='flex'>
               <button className='px-2 py-1 text-2xl self-end ml-10'>
-                <AiOutlineDelete className='text-[tomato] font-bold' />
+                <AiOutlineDelete className='text-[tomato] font-bold cursor-pointer' />
               </button>
             </div>
           }
@@ -146,12 +156,14 @@ const SinglePost = () => {
               <button className='py-2 px-4 bg-[#318CE7] rounded-md text-[white]' onClick={handleComment}>Post</button>
             </div>
             {
-              comments.map((c,i)=><Comments key={i} c={c} />)
+              comments.map((c,i)=><Comments key={i} getTheComments={getTheComments} c={c} />)
             }
           </div>
         }
       </div>
     </div>
+}
+    </>
   )
 }
 

@@ -9,6 +9,7 @@ const Login = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const[loading, setLoading] = useState(false)
 
     const [userInfo, setUserInfo] = useState({
         username:"",
@@ -21,9 +22,11 @@ const Login = () => {
     })
 
     const handleUser = async () =>{
+        setLoading(true)
         try{
             const response = login ? await axios.post(`${import.meta.env.VITE_REACT_APP_URI}/auth/signin`,userInfo) : await axios.post(`${import.meta.env.VITE_REACT_APP_URI}/auth/signup`,userInfo)
             console.log(response)
+            setLoading(false)
             if(!login && response.status === 200){
                 setLogin(true)
             }else if(login && response.status === 200){
@@ -32,6 +35,7 @@ const Login = () => {
             }
         }catch(err){
             console.log(err)
+            setLoading(false)
         }
     }
 
@@ -76,6 +80,9 @@ const Login = () => {
                 {!login && <input type='text' placeholder='enter country' className='border px-4 py-2 rounded-md outline-none' name='country' onChange={handleCHange} />}
 
                 {
+                    loading ?
+                    <div className='px-4 py-2 text-[white] rounded-md bg-[#324AB2]'>Loading...</div>
+                    :
                     <button className='px-4 py-2 text-[white] rounded-md bg-[#324AB2]' onClick={handleUser}>{login ? "Login" : "Register"}</button>
                 }
             </div>

@@ -119,6 +119,7 @@ import { app } from '../../firebase';
 const AddNewPost = () => {
     const [img, setImg] = useState(null);
     const [postdes, setPostDesc] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const user = useSelector((state) => state.user.currentUser);
     const token = user.token;
@@ -128,6 +129,7 @@ const AddNewPost = () => {
     };
 
     const uploadPostImage = async () => {
+        setLoading(true)
         if (img) {
             const storage = getStorage(app);
             const fileName = new Date().getTime() + img.name;
@@ -150,15 +152,18 @@ const AddNewPost = () => {
                         }
                     },
                     (error) => {
+                        setLoading(false)
                         console.log(error);
                         reject(error);
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                             console.log('File available at', downloadURL);
+                            setLoading(false)
                             resolve(downloadURL);
                         }).catch((error) => {
                             reject(error);
+                            setLoading(false)
                         });
                     }
                 );
@@ -171,6 +176,7 @@ const AddNewPost = () => {
     const uploadPost = async () => {
         try {
             const imgUrl = await uploadPostImage();
+            setLoading(true)
             let postdata = { desc: postdes };
 
             if (imgUrl) {
@@ -178,18 +184,19 @@ const AddNewPost = () => {
             }
 
             const response = await uploadThePost(token, postdata);
-
+            setLoading(false)
             if (response.status === 200) {
                 window.location.reload();
             }
 
         } catch (err) {
             console.log(err);
+            setLoading(true)
         }
     };
 
     return (
-        <div className='flex flex-col mt-3 items-center gap-1 rounded-lg px-2 py-3 mb-10 border'>
+        <div className='flex flex-col mt-3 items-center gap-1 rounded-lg w-[90%] md:w-auto px-2 py-3 mb-10 border'>
             <textarea className='border-2 outline-none rounded-md md:w-[400px] w-full h-[100px] px-3 py-3' placeholder={`whats on your mind ${user.username} ?`} onChange={(e) => setPostDesc(e.target.value)} />
             {
                 img ?
@@ -206,7 +213,12 @@ const AddNewPost = () => {
                         add image
                     </div>
             }
-            <button className='py-2 px-4 text-[white] bg-[#324AB2] self-end rounded-md' onClick={uploadPost}>POST</button>
+            {
+                loading ?
+                <div className='py-2 px-4 text-[white] bg-[#324AB2] md:bg-[teal] self-end rounded-md'>Loading...</div>
+                :
+                <button className='py-2 px-4 text-[white] bg-[#324AB2] md:bg-[teal] self-end rounded-md' onClick={uploadPost}>POST</button>
+            }
         </div>
     );
 };

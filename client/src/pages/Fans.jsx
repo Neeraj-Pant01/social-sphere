@@ -67,6 +67,7 @@ const Fans = () => {
     const {id} = useParams();
     const [showSuggest, setShowSuggest] = useState(false)
     const [users, setUsers] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const token = useSelector((state)=>state.user.currentUser.token)
     const user = useSelector((state)=>state.user.currentUser)
@@ -93,7 +94,12 @@ const Fans = () => {
     }
 
     return (
-        <div className='flex flex-col min-h-[70vh]'>
+        <>
+        {
+            loading ?
+            <div className='flex items-center justify-center'>Loading...</div>
+            :
+            <div className='flex flex-col min-h-[70vh]'>
             {
                 data === "fans" ?
                     <div>
@@ -129,6 +135,8 @@ const Fans = () => {
                 }
             </div>
         </div>
+        }
+        </>
     )
 }
 

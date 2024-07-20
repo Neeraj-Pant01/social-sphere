@@ -10,6 +10,7 @@ export const getPostComments = async (token, postId)  =>{
     }
 }
 
+
 export const addPostComment = async (token, postId, commentData) =>{
     const api = makeApirequest(token, postId);
     try{
@@ -19,6 +20,7 @@ export const addPostComment = async (token, postId, commentData) =>{
         return err;
     }
 }
+
 
 export const reportTheComment = async (token, postId) =>{
     const api = makeApirequest(token, postId);
@@ -30,15 +32,17 @@ export const reportTheComment = async (token, postId) =>{
     }
 }
 
-export const deleteComment = async (token, postId) =>{
+
+export const deleteComment = async (token, postId, commentId) =>{
     const api = makeApirequest(token);
     try{
-        const response = await api.delete(`comments/${postId}`)
+        const response = await api.delete(`/comments/${commentId}`,{postId})
         return response;
     }catch(err){
         return err;
     }
 }
+
 
 export const likeAcomment = async (token, id) =>{
     const api = makeApirequest(token);

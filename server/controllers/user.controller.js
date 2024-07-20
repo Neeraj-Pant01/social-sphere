@@ -10,11 +10,13 @@ exports.editUser = async (req, res, next) => {
         const user = await userModel.findById(req.params.id);
         if (!user) return next(createError(404, "user not found !"))
 
-        const iscorrect = bcryptjs.compareSync(req.body.currentpassword, user.password)
+            if(req.user.userId !== req.params.id) return next(createError(404,"you can update only your account !"))
 
-        console.log("iscorrect", iscorrect)
+        // const iscorrect = bcryptjs.compareSync(req.body.currentpassword, user.password)
 
-        if (!iscorrect) return next(createError(404, "password is not valid !"))
+        // console.log("iscorrect", iscorrect)
+
+        // if (!iscorrect) return next(createError(404, "password is not valid !"))
 
         if (req.body.newPassword) {
             const salt = bcryptjs.genSaltSync(10)
@@ -25,7 +27,8 @@ exports.editUser = async (req, res, next) => {
             }, {
                 new: true
             })
-            res.status(200).json(updatedUser)
+            const {password, ...others} = updatedUser._doc
+            res.status(200).json(others)
         } else {
             const updatedUser = await userModel.findByIdAndUpdate(req.params.id, {
                 $set: req.body
